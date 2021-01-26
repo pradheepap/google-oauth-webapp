@@ -2,10 +2,14 @@
   "name": "google-oauth-webapp",
   "version": "1.0.0",
   "description": "This is the demo for OAuth using Google Identity Provider",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "npm start server.js",
     "test": "npm test"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0"
   },
   "keywords": [
     "oauth",

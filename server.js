@@ -12,6 +12,10 @@ app.get('/clientId', (req, res) => {
   res.send(JSON.stringify({ clientId }))
 })
 
+app.get('/logout', (req, res) => {
+  res.redirect(`http://localhost:3000`)
+})
+
 app.get('/oauth2callback', handleOAuth2)
 async function handleOAuth2(req, res) {
   const tokenResponse = await fetch(
@@ -46,4 +50,17 @@ async function getUserInfo(accessToken) {
   return json
 }
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+async function getPlusInfo(accessToken) {
+    const response = await fetch(
+      `https://gmail.googleapis.com/gmail/v1/users/me/labels`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    )
+    const json = await response.json()
+    return json
+  }
+
+app.listen(port, () => console.log(`App listening on port ${port}!`))

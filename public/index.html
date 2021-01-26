@@ -1,43 +1,106 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>Google OAuth Login Demo App</title>
-  <link href='https://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet'>
-  <style>
-    body { font-family: 'ABeeZee'; }
-  </style>
+    <meta charset="utf-8">
+    <title>Google OAuth Login Demo App</title>
+    <link href='https://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'ABeeZee';
+        }
+
+        @media(max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+        }
+
+        .full-height {
+            min-height: 100vh;
+        }
+
+        .flex-center {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content {
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .code {
+            font-family: "Courier New", "Courier", monospace;
+            width: 100%;
+            padding: 4px;
+            border: 1px #ccc solid;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-  <a id="link"><button>Login with Google</button></a>
-  <div id="user-info-wrapper">
-    <img width="50" />
-    <p></p><p></p><p></p>
-  </div>
-  <script type="text/javascript">
-    const urlParams = new URLSearchParams(window.location.search)
-    if (urlParams.get('id')) {
-      document.querySelector('#link').style.display = 'none'
-      document.querySelector('img').src = urlParams.get('picture')
-      document.querySelectorAll('p')[0].innerHTML = `Hi, ${urlParams.get('given_name')}!`
-      document.querySelectorAll('p')[1].innerHTML = `Full name: ${urlParams.get('name')}`
-      document.querySelectorAll('p')[2].innerHTML = `Email: ${urlParams.get('email')}`
-    } else {
-      document.querySelector('#user-info-wrapper').style.display = 'none'
-    }
+   
+    <div class="flex-center full-height">
+        <div class="content">
+            <a id="link">
+                <button type="button" class="btn btn-primary"> Login with Google</button>
+            </a>
+          
+            <div class="card" style="width: 58rem;">
+                <img id="profile" class="card-img-top" alt="Profile Pic">
+                <div class="card-body">
+                  <h5 id="firstName" class="h2 card-title">Card title</h5>
+                  <h6 id="fullName" class="h2 card-title">FullName</h6>
+                  <p id="email" class="card-text">Email Address</p>
+                  <a href="/logout" id= "logout" class="btn btn-primary">Logout</a>
+                </div>
+              </div>
+        </div>   
+    </div>
+
+   
+   
+    <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search)
+        if (urlParams.get('id')) {
+            document.querySelector('#link').style.display = 'none'
+            document.getElementById('profile').src = urlParams.get('picture')
+            document.getElementById("firstName").innerText = `Given Name : ${urlParams.get('given_name')}`
+            document.getElementById("fullName").innerText = `Full Name : ${urlParams.get('name')}`
+            document.getElementById("email").innerText = `Email : ${urlParams.get('email')}!`
+            // document.getElementById('logout').href = urlParams.get('picture')
+        } else {
+            document.querySelector('.card').style.display = 'none'
+        }
 
 
-    async function getClientId() {
-      const redirectUri = 'http://localhost:3000/oauth2callback'
-      const scope = 'profile email openid'
-      const responseType = 'code'
+        async function getClientId() {
+            const redirectUri = 'http://localhost:3000/oauth2callback'
+            const scope = 'profile email openid'
+            const responseType = 'code'
 
-      const response = await fetch('clientId')
-      const json = await response.json()
-      document.querySelector('#link').href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${json.clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}&access_type=offline&include_granted_scopes=true`
-    }
-    getClientId()
-  </script>
+            const response = await fetch('clientId')
+            const json = await response.json()
+            document.querySelector('#link').href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${json.clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}&access_type=offline&include_granted_scopes=true`
+        }
+        getClientId()
+    </script>
 </body>
+
 </html>
