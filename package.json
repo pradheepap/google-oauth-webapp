@@ -4,6 +4,7 @@
   "description": "This is the demo for OAuth using Google Identity Provider",
   "main": "index.js",
   "scripts": {
+    "start": "npm start server.js",
     "test": "npm test"
   },
   "keywords": [
